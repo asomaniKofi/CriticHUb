@@ -1,0 +1,18 @@
+<% include ../partials/headfile %>
+<h1>Login </h1>
+<form action="/login" method="POST">
+    <div class="form-group">
+    Username:<input class="form-control" type="text" name="username" placeholder="Username" required>
+   <div class="form-group">
+    Password:<input class="form-control" type="password" name="password" placeholder="Password" required>
+     </div>
+     </div>
+    <button id="Login" class="btn btn-lg btn-default btn-block btn-primary">Login</button>
+</form>
+ <br>
+<a href="/auth/twitter" title="Twitter" class="btn btn-lg btn-default btn-block btn-primary btn-lg"><i class="fa fa-twitter fa-fw"></i> Twitter Login</a>
+<a href="/auth/google" title="Google" class="btn btn-danger btn-default btn-block btn-lg"><i class="fa fa-google-plus fa-fw"></i> Google Login</a>
+<a href="/auth/facebook" title="Facebook" class="btn-default btn-block btn btn-primary btn-lg"><i class="fa fa-facebook fa-fw"></i> Facebook Login</a>
+<p>Dont have an Account?<a href="/register">Sign Up</a></p>
+<p><a href="/reset">Forgot your password?</a></p>
+<% include ../partials/footfile %>

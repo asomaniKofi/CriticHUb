@@ -1,0 +1,59 @@
+<% include ../partials/headfile %>
+<div class="container">
+    <h1 style="text-align:center;">Add a Restaurant</h1>
+<div class="row">
+<div style="width:50%; margin:25px auto;">
+<form action="/restaurants" method="post" enctype="multipart/form-data">
+     <div class="form-group">
+   Name: <input class="form-control" placeholder="Restaurant Name" type="text" name="Name" required>
+    <div class="form-group">
+   Image: <input class="form-control" type="file" id="Link"  name="Link" accept="image/*" required>
+</div>
+</div>
+<div class="form-group">
+    Address Line 1: <input placeholder="Address" class="form-control" type="text" name="LineOne" required>
+<div class="form-group">
+    Address Line 2: <input placeholder="Address (Optional)" class="form-control" type="text" name="LineTwo" required> 
+<div class="form-group">
+    Address Line 3: <input placeholder="Address (Optional)" class="form-control" type="text" name="LineThree">
+<div class="form-group">
+    Postcode: <input class="form-control" name="Postcode" type="text" placeholder=" e.g. xxx xxx" required/>
+    <div class="form-group">
+        Type: <select id="typeSelect" class="custom-select">
+ <option value= " "> </option>
+ <option value="Fast-Food">Fast Food</option>
+ <option value= "Desert-Only">Desert</option>
+ <option value= "Pub">Pub</option>
+ <option value= "Cafe">Cafe</option>
+ <option value= "Fast-Casual">Fast Casual</option>
+ <option value= "Ethnic">Ethnic</option>
+ <option value= "Fine-Dining">Fine Dining</option>
+ <option value= "Casual-Dining">Casual Dining</option>
+ <option value= "Family">Family</option>
+</select>
+<input type="hidden" id="RestaurantType" name="Type" value="" required> 
+
+<div class="form-group">
+     Telephone: <input class="form-control" type="tel" name="Telephone" required>
+<div class="form-group">
+     Description: <textarea class="form-control" name="Description" rows="10" cols="30" name="Description"></textarea>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+    </div>
+
+<div class="form-group">
+    <button id="Submit" class="btn btn-lg btn-default btn-block btn-primary">Submit</button>
+</div>
+</form>
+<a href="/restaurants">Return</a>
+</div>
+</div>
+</div>
+</div>
+<% include ../partials/footfile %>
+
+

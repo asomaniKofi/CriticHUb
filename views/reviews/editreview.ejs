@@ -1,0 +1,42 @@
+<% include ../partials/reviewheadfile %>
+<div class="container">
+      <h1 style="text-align:center;">Edit Review</h1>
+    <div class="row">
+        <div style="width:50%; margin:25px auto;">
+           <form action="/restaurants/<%= restaurant_id%>/reviews/<%= review._id%>?_method=PUT" method="POST">
+   <div class="form-group">
+     Review: <textarea class="form-control" placeholder="Sincere review here" rows="10" cols="30" name="Review"><%= review.Text%></textarea>
+</div>
+    Rating:  <div id="rateYo"></div>
+  <input type="hidden" id="custId" name="custId" value="<%= review.Rating%>"> 
+  <div class="form-group">
+    <button id="edit" class="btn btn-lg btn-default btn-block btn-primary">Submit</button>
+</div>
+           </form>
+           <a href="/restaurants">Return</a>
+        </div>
+    </div>
+</div>
+<script>
+ $("#rateYo").each(function(e){
+     $(this).rateYo({
+   starWidth: "40px",
+   normalFill: "#A0A0A0",
+   numStars: 5,
+   maxValue: 5,
+   precision: 1,
+   rating:0,
+   halfStar: false,
+   onSet: function (rating, rateYoInstance) {
+     if (rating > 1) {
+        $("#custId").val(rating);
+        $("#custId").html(rating);
+    }else {
+        $("#custId").val(rating);
+         $("#custId").html(rating);
+    }
+}
+ }); 
+ });
+    </script>
+<% include ../partials/footfile %>

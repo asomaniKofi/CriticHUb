@@ -1,0 +1,25 @@
+<% include ../partials/headfile %>
+<div class="container">
+    <% console.log(currentUser);%>
+    <h1 style="text-align:center;">Update <%= User.username %></h1>
+    <div class="row">
+    <div style="width:50%; margin:25px auto;">
+        <form action="/user/<%= User._id%>?_method=PUT" method="POST" enctype="multipart/form-data">
+                 <div class="form-group">
+   Username: <input class="form-control" value="<%= User.username %>" type="text" name="Name" required>
+   </div>
+   <div class="form-group">
+   Email: <input class="form-control" value="<%= User.Email %>" type="email" name="Email" required>
+   </div>
+<div class="form-group">
+   Image: <input class="form-control" type="file" id="Link"  name="Link" accept="image/*" >
+</div>
+<div class="form-group">
+    <button class="btn btn-lg btn-default btn-block btn-primary">Update</button>
+</div>
+</form>
+<a href="/user/<%= User._id%>">Return</a>
+</div>
+</div>
+</div>
+<% include ../partials/footfile %>

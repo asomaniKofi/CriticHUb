@@ -1,0 +1,18 @@
+<% include ../partials/headfile %>
+<h1>Complete Your Profile</h1>
+<% console.log(currentUser._id); %>
+<form action="/confirmprofile" method="POST">
+    <div class="form-group">
+        Type: <select id="mySelect" class="custom-select">
+ <option value= " "> </option>
+ <option value="Owner">Owner</option>
+ <option value= "Critic">Critic</option>
+</select>
+<input type="hidden" id="UserType" name="UserType" value="" required> 
+<input type="hidden" id="UserID" name="UserID" value="<%= currentUser._id%>" required>
+    </div>
+    <div class="form-group">
+    <button class="btn btn-lg btn-default btn-block btn-primary">Complete</button>
+    </div>
+</form>
+<% include ../partials/footfile %>

@@ -1,0 +1,139 @@
+<% include ../partials/customheadfile %>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-3">
+            <div id="map" class="map-responsive"></div>
+        </div>
+        <div class="col-md-9">
+            <div class="card mb-3">
+                <img class="card-img-top" src="<%= restaurant.Image %>">
+                <div class="card-body">
+                   <h4 class="float-right"> <%= restaurant.Telephone %></h4>
+                     <h4 class="card-title"> <a><%= restaurant.Name %> </a></h4>
+                     <p>  <%= restaurant.Address %></p>
+                      <p>  </p><p>   </p><p> </p>
+                    <p class="card-text"> <%= restaurant.Description %></p>
+                    <% if(currentUser){ %> 
+                    <%if(currentUser.Type == "Owner" && restaurant.Originator.id.equals(currentUser._id)){ %>
+                     <a class="btn btn-warning" id="update" href="/restaurants/<%= restaurant._id %>/edit" >Update</a>
+                     <form style="display:inline;" action="/restaurants/<%= restaurant._id%>?_method=DELETE" method="POST">
+                         <button id="remove" class="btn btn-danger">Remove</button>
+                     </form>
+                    <% } %>
+                    <% } %> <!--Remove Logic-->
+                      <% let test = 0; %>
+                      <% restaurant.Reviews.forEach(function(review){%>
+                      <% test += review.Rating %>
+                      <% }); %> 
+                    
+                     Average Rating: <%= Math.round((test/restaurant.Reviews.length) *10)/10 %>/5 <div id="rateYo" class="float-right"><%= test/restaurant.Reviews.length %></div>
+                </div>
+            </div>
+        </div>
+        <div class="card bg-light card-body mb-3">
+             <% if(currentUser){ %>
+             <% if(currentUser.Type == "Critic"){ %>
+             <p class="text-right">
+             <a class="btn btn-success" href="/restaurants/<%= restaurant._id%>/reviews/new"><img src="data:image/png;base64,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">Review us</a>
+             </p>
+             <% } %>
+            <hr>
+         <% restaurant.Reviews.forEach(function(review){%>
+         <div class="row">
+             <div class="col-md-12">
+                 <!--<div class="card">-->
+              <!--<div class="card-body">-->
+                 <span class="float-right"><%= review.ReviewDate %></span>
+<strong><%= review.User.username %></strong><div class="rateYo" style="display:inline-block;"> <%= review.Rating %></div>
+           <% if(currentUser){ %>
+           <p> 
+ <%=review.Text%>
+                </p>
+           <% if(currentUser.Type == "Critic" && review.User.id.equals(currentUser._id)){ %>
+                <a class="btn btn-xs btn-warning" 
+               href="/restaurants/<%= restaurant._id%>/reviews/<%= review._id%>/edit">Edit</a>
+               <form style="display:inline;" action="/restaurants/<%= restaurant._id%>/reviews/<%= review._id%>?_method=DELETE" method="POST">
+                   <input type="submit" id="delete" class="btn btn-xs btn-danger" value="Delete">
+               </form>
+               <hr>
+               <!--</div>-->
+         <%   } %>
+         <%   } else{ %>
+          <p> 
+ <%=review.Text%>
+                </p>
+         <% } %>
+                  <% })%>
+                  <% }else{%>
+        <% restaurant.Reviews.forEach(function(review){%>
+         <div class="row">
+             <div class="col-md-12">
+                 <span class="float-right"><%= review.ReviewDate %></span>
+                 <p><strong><%= review.User.username %></strong>  
+          <div class="rateYo"> <%= review.Rating %></div>
+                </p>
+                <p> 
+ <%=review.Text%>
+                </p>
+                <hr>
+                  <% }); %>
+                  <% } %> <!--Other Logic -->
+                  </div>
+                   </div>
+                   <!--</div>-->
+                  </div>
+    </div>
+</div>
+</div>
+<script>
+$(".rateYo").each(function(e){
+     $(this).rateYo({
+   starWidth: "20px",
+   normalFill: "#A0A0A0",
+   numStars: 5,
+   maxValue: 5,
+   precision: 1,
+   rating:Number($(this).text()),
+   halfStar: false,
+readOnly: true,
+ }); 
+ });
+ 
+ $("#rateYo").each(function(e){
+     $(this).rateYo({
+   starWidth: "40px",
+   normalFill: "#A0A0A0",
+   numStars: 5,
+   maxValue: 5,
+   precision: 1,
+   rating:Number($(this).text()),
+   halfStar: false,
+readOnly: true,
+ }); 
+ });
+function initMap() {
+    let lat = <%= restaurant.lat %>;
+    let lng = <%= restaurant.lng %>;
+    let center = {lat: lat, lng: lng };
+    let map = new google.maps.Map(document.getElementById('map'), {
+        center: center,
+        zoom: 8
+    });
+    let contentString = `
+      <strong><%= restaurant.Name %><br />
+      <%= restaurant.Address%></strong>
+    `
+    let infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+    let marker = new google.maps.Marker({
+        position: center,
+        map: map
+    });
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+    });
+  }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAag-kIOas1r0R2DnugbRWxkeQtmLYk9IA&callback=initMap"></script>
+<% include ../partials/footfile %>

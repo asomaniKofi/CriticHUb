@@ -1,0 +1,60 @@
+<%include ../partials/headfile %>
+<div class="container">
+    <h1 style="text-align:center;">Update <%= restaurant.Name %></h1>
+<div class="row">
+<div style="width:50%; margin:25px auto;">
+<form action="/restaurants/<%= restaurant._id%>?_method=PUT" method="POST" enctype="multipart/form-data">
+     <div class="form-group">
+   Name: <input class="form-control" value="<%= restaurant.Name %>" type="text" name="Name" required>
+   </div>
+    <div class="form-group">
+   Image: <input class="form-control" type="file" id="Link"  name="Link" accept="image/*" >
+</div>
+<div class="form-group">
+    Address Line 1: <input placeholder="Address" class="form-control" type="text" name="LineOne">
+</div>
+<div class="form-group">
+     Address Line 2: <input placeholder="Address" class="form-control" type="text" name="LineTwo"> 
+</div>
+<div class="form-group">
+     Address Line 3: <input placeholder="Address" class="form-control" type="text" name="LineThree">
+</div>
+<div class="form-group">
+     Postcode: <input class="form-control" name="Postcode" type="text" placeholder=" e.g. xxx xxx">
+</div>
+<div class="form-group">
+<input value="<%= restaurant.Address %>" class="form-control" type="hidden" name="Address" required>
+    </div>
+<div class="form-group">
+    Postcode: <input class="form-control" name="Postcode" type="text" value="<%= restaurant.Postcode %>" required>
+    </div>
+<div class="form-group">
+    Type: <select id="typeSelect" class="custom-select">
+ <option value= "<%= restaurant.Type %>"><%= restaurant.Type %></option>
+ <option value="Fast-Food">Fast Food</option>
+ <option value= "Desert-Only">Desert</option>
+ <option value= "Pub">Pub</option>
+ <option value= "Cafe">Cafe</option>
+ <option value= "Fast-Casual">Fast Casual</option>
+ <option value= "Ethnic">Ethnic</option>
+ <option value= "Fine-Dining">Fine Dining</option>
+ <option value= "Casual-Dining">Casual Dining</option>
+ <option value= "Family">Family</option>
+</select>
+<input type="hidden" id="RestaurantType" name="Type" value="<%= restaurant.Type %>" required> 
+    </div>
+<div class="form-group">
+     Telephone: <input class="form-control" type="tel" name="Telephone" value="<%= restaurant.Telephone %>" required>
+     </div>
+<div class="form-group">
+     Description: <textarea class="form-control" name="Description" rows="10" cols="30" ><%= restaurant.Description %></textarea>
+</div>
+<div class="form-group">
+    <button id="Update" class="btn btn-lg btn-default btn-block btn-primary">Update</button>
+</div>
+</form>
+<a href="/restaurants">Return</a>
+</div>
+</div>
+</div>
+<% include ../partials/footfile %>

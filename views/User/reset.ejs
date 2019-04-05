@@ -1,0 +1,12 @@
+<% include ../partials/headfile %>
+<h1>Reset Password</h1>
+<form action="/reset" method="POST">
+    <legend> Forgot Password </legend>
+    <div class="form-group">
+         Email:  <input type="email" class="form-control" autofocus name="Email" placeholder="Email Address" required>
+    </div>
+        <div class="form-group">
+    <button class="btn btn-lg btn-default btn-block btn-primary">Reset</button>
+    </div>
+</form>
+<% include ../partials/footfile %>

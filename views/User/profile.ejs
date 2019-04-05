@@ -1,0 +1,97 @@
+<% include ../partials/customheadfile %>
+<div class="card text-center">
+  <div class="card-header">
+    <h5 class="card-title"><%= currentUser.username %></h5>
+    <img class="img-thumbnail" src="<%= currentUser.Avatar %>" alt="Cloudinary">
+  </div>
+  <div class="card-body"> 
+<% if(locals.Owner){ %>
+<% if(!Array.isArray(locals.Owner)){ %> 
+<% if(loclas.Owner.Originator){ %>
+     <p class="card-text"> Restaurant: </p>
+     <p class="card-text"><a style="text-decoration:none; color:black;" href="/restaurants/<%= locals.Owner._id%>"><%= locals.Owner.Name %> </a></p>
+     <p class="card-text"><%= Owner.Address %></p>
+<% } %>
+<% }else{ %>
+<% console.log(locals) %>
+     <% if(locals.Owner.length > 0){ %>
+     <p class="card-text"> Restaurant: </p>
+     <p class="card-text"><a style="text-decoration:none; color:black;" href="/restaurants/<%= locals.Owner[0]._id%>"><%= locals.Owner[0].Name %> </a></p>
+     <p class="card-text"><%= locals.Owner[0].Address %></p>
+<% }else{ %>
+
+<% } %>
+<% } %>
+<% } %>
+<% if(locals.Critic){ %>
+<% if(Array.isArray(locals.Critic)){ %>
+<% if(locals.Critic.length > 0){ %>
+<% Critic.forEach(function(review){ %>
+<div class="row"> 
+<div class="col-md-12">                  
+<div class="card text-left">                   
+<div class="card-body">                   
+                <span class="float-right"><%= review.ReviewDate %></span>
+                <strong><%= review.User.username %></strong><div class="rateYo" style="display:inline-block;"> <%= review.Rating %></div>
+                </p>
+                <p> 
+                <%= review.Text %>
+                </p>
+                </div>
+                </div>
+                </div>
+                </div>
+<% }); %>
+<% }else{ %>
+
+<% } %>
+<% }else{ %>
+<div class="row"> 
+<div class="col-md-12">                  
+<div class="card text-left">                   
+<div class="card-body">                   
+                 <span class="float-right"><%= Critic.ReviewDate %></span>
+                 <strong><%= Critic.username %></strong><div class="rateYo" style="display:inline-block;"> <%= Critic.Rating %></div>
+                 </p>
+                 <p> 
+                 <%= Critic.Text%>
+                 </p>
+</div>
+</div>
+</div>
+</div>
+<% } %>
+<% } %>
+
+<% if(locals.User){ %>
+      <p class="card-text"><%= currentUser.Type %>.</p>
+      <p class="card-text"><%= currentUser.Email %></p>
+      <a class="btn btn-xs btn-warning" href="/user/<%= currentUser._id%>/edit">Edit</a>
+      <form style="display:inline;" action="/user/<%= currentUser._id%>?_method=DELETE" method="POST">
+      <input type="submit" id="delete" class="btn btn-xs btn-danger" value="Delete">
+      </form>
+<% }else{ %>
+     <p class="card-text"><%= currentUser.Type %>.</p>
+     <p class="card-text"><%= currentUser.Email %></p>
+     <a class="btn btn-xs btn-warning" href="/user/<%= currentUser._id%>/edit">Edit</a>
+     <form style="display:inline;" action="/user/<%= currentUser._id%>?_method=DELETE" method="POST">
+     <input type="submit" id="delete" class="btn btn-xs btn-danger" value="Delete">
+     </form>
+<% } %>
+</div>
+</div>
+<script>
+$(".rateYo").each(function(e){
+$(this).rateYo({
+   starWidth: "20px",
+   normalFill: "#A0A0A0",
+   numStars: 5,
+   maxValue: 5,
+   precision: 1,
+   rating:Number($(this).text()),
+   halfStar: false,
+   readOnly: true,
+}); 
+});
+</script>
+<% include ../partials/footfile %>

@@ -88,6 +88,9 @@ router.post("/reset",function(req, res,next) {
     async.waterfall([
         function(done){
             crypto.randomBytes(20,function(err, buf){
+                if(err){
+                    console.log(err);
+                }
                 let token = buf.toString("hex");
                 done(err,token);
             });
@@ -118,6 +121,7 @@ router.post("/reset",function(req, res,next) {
      transporter.sendMail(mailOptions,function(error,info){
         if(error){
             req.flash("Error", error.message);
+            
         }else{
             console.log(info.response + " Success");
             req.flash("Success","An email was sent to " +user.Email + "with further instructions");

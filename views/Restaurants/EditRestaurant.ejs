@@ -4,30 +4,18 @@
 <div class="row">
 <div style="width:50%; margin:25px auto;">
 <form action="/restaurants/<%= restaurant._id%>?_method=PUT" method="POST" enctype="multipart/form-data">
-     <div class="form-group">
+<div class="form-group">
    Name: <input class="form-control" value="<%= restaurant.Name %>" type="text" name="Name" required>
-   </div>
+</div>
     <div class="form-group">
    Image: <input class="form-control" type="file" id="Link"  name="Link" accept="image/*" >
 </div>
 <div class="form-group">
-    Address Line 1: <input placeholder="Address" class="form-control" type="text" name="LineOne">
-</div>
-<div class="form-group">
-     Address Line 2: <input placeholder="Address" class="form-control" type="text" name="LineTwo"> 
-</div>
-<div class="form-group">
-     Address Line 3: <input placeholder="Address" class="form-control" type="text" name="LineThree">
-</div>
-<div class="form-group">
-     Postcode: <input class="form-control" name="Postcode" type="text" placeholder=" e.g. xxx xxx">
+   Address: <input value="<%= restaurant.Address %>" class="form-control" type="text" name="newAddress">
 </div>
 <div class="form-group">
 <input value="<%= restaurant.Address %>" class="form-control" type="hidden" name="Address" required>
-    </div>
-<div class="form-group">
-    Postcode: <input class="form-control" name="Postcode" type="text" value="<%= restaurant.Postcode %>" required>
-    </div>
+</div>
 <div class="form-group">
     Type: <select id="typeSelect" class="custom-select">
  <option value= "<%= restaurant.Type %>"><%= restaurant.Type %></option>

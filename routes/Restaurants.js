@@ -223,13 +223,12 @@ router.put("/restaurants/:id",userStatus,upload.single("Link"),function(req,res)
                     //Check for new Address
                         let OriginalAddress = req.body.Address;
                         let newAddress = "";
-         if(req.body.LineOne != ""){
-             if(req.body.LineTwo != ""){
-                 if(req.body.LineThree != ""){
-                     newAddress = req.body.LineOne + " " + req.body.LineTwo + " " + req.body.LineThree;
-                 }
-             }
+        if(req.body.newAddress){
+        if(req.body.newAddress != ""){
+             newAddress = req.body.newAddress; 
          }
+         }
+         
              
          if(newAddress != ""){
  if(OriginalAddress != newAddress){
@@ -296,12 +295,10 @@ router.put("/restaurants/:id",userStatus,upload.single("Link"),function(req,res)
         }else{
          let OriginalAddress = req.body.Address;
          let newAddress = "";
-         if(req.body.LineOne != ""){
-             if(req.body.LineTwo != ""){
-                 if(req.body.LineThree != ""){
-                     newAddress = req.body.LineOne + " " + req.body.LineTwo + " " + req.body.LineThree ;
-                 }
-             }
+        if(req.body.newAddress){
+        if(req.body.newAddress != ""){
+             newAddress = req.body.newAddress;
+         }
          }
              
          if(newAddress != ""){

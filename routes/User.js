@@ -5,7 +5,7 @@ let transporter = nodemailer.createTransport({
     service:"gmail",
     auth:{
         user:"donotreplycritic@gmail.com",
-        pass:"72UJ9G68NbrrLDcyhPtgjP7rqBjurnSHK8dAL2QvXU"
+        pass:"2b7aa296rfqghzp83py9dd4sg39dfk7rha2wje2un26d2k96q4"
     }
 });
 let User = require("../models/User");
@@ -136,7 +136,7 @@ router.put("/user/:id",SecurityCheck,upload.single("Link"),function(req,res){
             console.log(err);
             res.redirect("back");
             }else{
-                req.logIn(update,function(err){
+                req.login(update,function(err){
                     if(err){
                         console.log("Line 133: " + err);
                        res.redirect("/restaurants");  

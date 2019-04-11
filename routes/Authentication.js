@@ -10,7 +10,7 @@ let transporter = nodemailer.createTransport({
     service:"gmail",
     auth:{
         user:"donotreplycritic@gmail.com",
-        pass:"72UJ9G68NbrrLDcyhPtgjP7rqBjurnSHK8dAL2QvXU"
+        pass:"2b7aa296rfqghzp83py9dd4sg39dfk7rha2wje2un26d2k96q4"
     }
 });
 let multer = require("multer");
@@ -85,31 +85,29 @@ router.get("/reset",function(req,res){
     res.render("User/reset");
 });
 router.post("/reset",function(req, res,next) {
-    async.waterfall([
-        function(done){
-            crypto.randomBytes(20,function(err, buf){
-                if(err){
-                    console.log(err);
-                }
-                let token = buf.toString("hex");
-                done(err,token);
-            });
-        },
-        function(token,done){
-            User.findOne({Email:req.body.Email},function(err,user){
-                if(!user || err){
-                    req.flash("Error","No account was found with that email address");
-                    return res.redirect("/reset");
-                }
-               user.resetToken = token;
-               user.resetExpires = Date.now() + 3600000;
-                user.save(function(err){
-                    done(err,token,user);
-                });
-            });
-        },
-        function(token, user,done){
-        let mailOptions = {
+async.waterfall([
+ function(done){
+     crypto.randomBytes(20, function(err, buf){
+        let token = buf.toString('hex');
+        done(err,token);
+     });
+ },
+ function(token,done){
+     User.findOne({Email:req.body.Email},function(err,user){
+         if(!user || err){
+             req.flash("Error","No account with that email address exists");
+             return res.redirect("/reset");
+         }
+         user.resetToken = token;
+         user.resetExpires = Date.now() + 3600000;
+        
+        user.save(function(err){
+            done(err,token, user);
+        });
+     });
+ },
+ function(token,user,done){
+     let mailOptions = {
         from : "donotreplycritic@gmail.com",
         to:user.Email,
         subject:"Password Reset",
@@ -118,22 +116,33 @@ router.post("/reset",function(req, res,next) {
         "http://"+ req.headers.host + "/reset/" + token + "\n\n" +
         "If you didnt request it please delete this email"
     };
-     transporter.sendMail(mailOptions,function(error,info){
+    transporter.sendMail(mailOptions,function(error,info){
         if(error){
+            console.log(error);
             req.flash("Error", error.message);
-            
         }else{
             console.log(info.response + " Success");
-            req.flash("Success","An email was sent to " +user.Email + "with further instructions");
+            req.flash("Success","An email was sent to " + user.Email + " with further instructions");
             done(error,"done");
         }
     });
-        }
-        ],function(err){
-            if(err) return next(err);
-               res.redirect("/restaurants");
-        }
-        );
+    
+ }
+
+], function(err){
+    if(err) return next(err); 
+    res.redirect("/reset");
+});
+
+});
+router.get('/reset/:token', function(req, res) {
+  User.findOne({ resetToken: req.params.token, resetExpires: { $gt: Date.now() } }, function(err, user) {
+    if (!user || err) {
+      req.flash('Error', 'Password reset token is invalid or has expired.');
+      return res.redirect('/reset');
+    }
+    res.render('User/resetpassword', {token: req.params.token});
+  });
 });
 router.get('/reset/:token', function(req, res) {
   User.findOne({ resetToken: req.params.token, resetExpires: { $gt: Date.now() } }, function(err, user) {

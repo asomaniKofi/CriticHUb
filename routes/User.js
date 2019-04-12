@@ -202,13 +202,13 @@ router.put("/user/:id",SecurityCheck,upload.single("Link"),function(req,res){
             console.log(err);
            return res.redirect("back");
             }else{
-             req.logIn(update,function(err){
+             req.login(update,function(err){
                     if(err){
                         console.log("Line 133: " + err);
                        res.redirect("/restaurants");  
                     }
                 });
-                 //res.redirect("/restaurants");
+                 res.redirect("/restaurants");
             }
         });
             }
@@ -278,7 +278,7 @@ router.put("/user/:id",SecurityCheck,upload.single("Link"),function(req,res){
             console.log(err);
             return res.redirect("back");
             }else{
-            req.logIn(update,function(err){
+            req.login(update,function(err){
                     if(err){
                         console.log("Line 133: " + err);
                        res.redirect("/restaurants");  
@@ -323,7 +323,7 @@ router.put("/user/:id",SecurityCheck,upload.single("Link"),function(req,res){
             console.log(err);
             res.redirect("back");
             }else{
-             req.logIn(update,function(err){
+             req.login(update,function(err){
                     if(err){
                         console.log("Line 133: " + err);
                        res.redirect("/restaurants");  

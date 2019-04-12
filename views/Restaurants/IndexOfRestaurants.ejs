@@ -51,12 +51,12 @@ $(document).ready(function(){
     let search = [];
     let defSearch = [];
     let tester;
-<% Restaurants.forEach(function(restaurant){%>
+<% Restaurants.forEach(function(restaurant){ %>
       tester = {
      Originator:{ 
-     id:"<%= restaurant.Originator.id %>",
-     username: "<%= restaurant.Originator.username %>",
-     Email: "<%= restaurant.Originator.Email %>"
+     id: "<%= restaurant.Originator.id%>",
+     username: "<%= restaurant.Originator.username%>",
+     Email: "<%= restaurant.Originator.Email%>"
      },
      _id: "<%= restaurant._id %>",
      Name: "<%= restaurant.Name %>",
@@ -64,7 +64,7 @@ $(document).ready(function(){
      }
      search.push(tester);
      defSearch.push(tester);
-    <%});%>
+    <% }); %>
 let options = {
   shouldSort: true,
   findAllMatches: true,
@@ -83,17 +83,22 @@ $("#search").keyup(function(){
     let query = $("#search").val();
     let textvalue = $("#search").text();
     let result = fuse.search(query);
-    if(query == "" || query == null || textvalue.length < 1){
-    for(let x=0; x< defSearch.length; x++){
+ console.log("Query: " + result);
+if(result){
+        $(".row,text-center").empty();
+        for(let x=0; x< result.length; x++){
+        let restaurant = "<div class='col-md-3 col-sm-6'> <div class='img-thumbnail'> <img class='img-fluid' src='"+result[x].Image+"' alt='Restaurant Cloudinary'> <div class='caption'> <h3 id='tester'>"+result[x].Name+"</h3> <p><a class='btn btn-primary' id='"+result[x].Name+"' href='/restaurants/"+result[x]._id+"'>View </a></p></div></div>";
+        $(".row,text-center").append(restaurant);
+        }
+    
+}
+if(result.length == 0){
+        $(".row,text-center").empty();
+        for(let x=0; x< defSearch.length; x++){
         let restaurant = "<div class='col-md-3 col-sm-6'> <div class='img-thumbnail'> <img class='img-fluid' src='"+defSearch[x].Image+"' alt='Restaurant Cloudinary'> <div class='caption'> <h3 id='tester'>"+defSearch[x].Name+"</h3> <p><a class='btn btn-primary' id='"+defSearch[x].Name+"' href='/restaurants/"+defSearch[x]._id+"'>View </a></p></div></div>";
-         $(".row,text-center").append(restaurant);
-    }
-    }else{
-         for(let x=0; x< search.length; x++){
-        let restaurant = "<div class='col-md-3 col-sm-6'> <div class='img-thumbnail'> <img class='img-fluid' src='"+result[x].Image+"' alt='Restaurant Cloudinary'> <div class='caption'> <h3 id='tester'>"+search[x].Name+"</h3> <p><a class='btn btn-primary' href='/restaurants/"+result[x]._id+"'>View </a></p></div></div>";
-         $(".row,text-center").append(restaurant);
-    }
-    }
+        $(".row,text-center").append(restaurant);
+        }
+     } 
 });
 });
 

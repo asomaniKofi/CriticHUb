@@ -284,7 +284,7 @@ router.put("/user/:id",SecurityCheck,upload.single("Link"),function(req,res){
                        res.redirect("/restaurants");  
                     }
                 });
-                 //res.redirect("/restaurants");
+                 res.redirect("/restaurants");
             }
         });
         });
@@ -329,7 +329,7 @@ router.put("/user/:id",SecurityCheck,upload.single("Link"),function(req,res){
                        res.redirect("/restaurants");  
                     }
                 });
-                 //res.redirect("/restaurants");
+            res.redirect("/restaurants");
             }
 });
      }

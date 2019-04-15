@@ -6,23 +6,21 @@
   </div>
   <div class="card-body"> 
 <% if(locals.Owner){ %>
-<% if(Array.isArray(locals.Owner)){ %> 
-<% if(loclas.Owner.length > 1){ %>
-     <p class="card-text"> Restaurant: </p>
-     <% Owner.forEach(function(restaurant){ %>
-     <p class="card-text"><a style="text-decoration:none; color:black;" href="/restaurants/<%= restaurant._id%>"><%= restaurant.Name %> </a></p>
-     <p class="card-text"><%= restaurant.Address %></p>
-     <% });%>
-<% }else{ %>
+<% if(!Array.isArray(locals.Owner)){ %> 
+<% if(loclas.Owner.Originator){ %>
      <p class="card-text"> Restaurant: </p>
      <p class="card-text"><a style="text-decoration:none; color:black;" href="/restaurants/<%= locals.Owner._id%>"><%= locals.Owner.Name %> </a></p>
-     <p class="card-text"><%= locals.Owner.Address %></p>
+     <p class="card-text"><%= Owner.Address %></p>
 <% } %>
 <% }else{ %>
+<% console.log(locals) %>
+     <% if(locals.Owner.length > 0){ %>
      <p class="card-text"> Restaurant: </p>
-     <p class="card-text"><a style="text-decoration:none; color:black;" href="/restaurants/<%= locals.Owner._id%>"><%= locals.Owner.Name %> </a></p>
-     <p class="card-text"><%= locals.Owner.Address %></p>
-<% }%>
+     <p class="card-text"><a style="text-decoration:none; color:black;" href="/restaurants/<%= locals.Owner[0]._id%>"><%= locals.Owner[0].Name %> </a></p>
+     <p class="card-text"><%= locals.Owner[0].Address %></p>
+<% }else{ %>
+ <% } %>
+<% } %>
 <% } %>
 <% if(locals.Critic){ %>
 <% if(Array.isArray(locals.Critic)){ %>
@@ -44,8 +42,7 @@
                 </div>
 <% }); %>
 <% }else{ %>
-
-<% } %>
+ <% } %>
 <% }else{ %>
 <div class="row"> 
 <div class="col-md-12">                  
@@ -64,7 +61,7 @@
 <% } %>
 <% } %>
 
-<% if(locals.User){ %>
+ <% if(locals.User){ %>
       <p class="card-text"><%= currentUser.Type %>.</p>
       <p class="card-text"><%= currentUser.Email %></p>
       <a class="btn btn-xs btn-warning" href="/user/<%= currentUser._id%>/edit">Edit</a>
@@ -95,4 +92,4 @@ $(this).rateYo({
 }); 
 });
 </script>
-<% include ../partials/footfile %>
+<% include ../partials/footfile %> 

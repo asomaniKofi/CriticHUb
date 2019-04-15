@@ -361,14 +361,13 @@ router.delete("/user/:id",SecurityCheck,function(req,res){
           if(err){
           req.flash("Error",err.message);
           return res.redirect("back");
-                   }
+          }
                   console.log("Success");
                });
                User.findByIdAndRemove(req.user.id,function(err){
                    if(err){
                        console.log(err);
                    }else{
-
         transporter.sendMail(mailOptions,function(error,info){
         if(error){
             console.log(error);
@@ -395,12 +394,26 @@ router.delete("/user/:id",SecurityCheck,function(req,res){
             console.log(error);
         }else{
             console.log(info.response + " Success");
-            console.log(info);
+            User.findByIdAndRemove(req.user.id,function(err){
+                   if(err){
+                       console.log(err);
+                   }else{
+        transporter.sendMail(mailOptions,function(error,info){
+        if(error){
+            console.log(error);
+        }else{
+            console.log(info.response + " Success");
+            req.flash("Success","Your account has been removed :( ");
+            res.redirect("/restaurants");
+        }
+    });
         }
     });
            }
        });
-   }  
+   }
+});
+}
 });
 
 function Check(req,res,next){

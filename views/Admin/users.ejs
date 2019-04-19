@@ -33,16 +33,22 @@
   </div>
 </nav>  
 <h1 class="text-center"> Admin Panel</h1>
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroup-sizing-default">Username Here</span>
+  </div>
+<input id="search" class="form-control mr-sm-2" type="search" name="Search" aria-label="Search">
+</div>
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">UserName</th>
+      <th scope="col">Username</th>
       <th scope="col">Email</th>
       <th scope="col">Type</th>
     </tr>
   </thead>
  
-  <tbody>
+  <tbody class="userdynamic">
      <% Users.forEach(function(user){%>
     <tr>
       <% if(user.Type != "HubAdmin"){ %>
@@ -61,5 +67,55 @@
  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" ></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function(){
+    let search = [];
+    let defSearch = [];
+    let tester;
+<% Users.forEach(function(user){ %>
+      tester = {
+     Username: "<%= user.username %>",
+     Email: "<%= user.Email %>",
+     Type:"<%= user.Type %>",
+     }
+     search.push(tester);
+     defSearch.push(tester);
+    <% }); %>
+let options = {
+  shouldSort: true,
+  findAllMatches: true,
+  threshold: 0.6,
+  location: 0,
+  distance: 100,
+  maxPatternLength: 32,
+  minMatchCharLength: 0,
+  keys: [
+    "Username"
+]
+};
+let fuse = new Fuse(search, options);
+$("#search").keyup(function(){
+    $(".userdynamic").empty();
+    let query = $("#search").val();
+    let textvalue = $("#search").text();
+    let result = fuse.search(query);
+ console.log("Query: " + result);
+if(result){
+        $(".userdynamic").empty();
+        for(let x=0; x< result.length; x++){
+        let user = "<tr><td>"+result[x].Username + "</td> <td>"+result[x].Email + "</td> <td>"+result[x].Type + "</td> </tr>";
+        $(".userdynamic").append(user);
+        }
+}
+if(result.length == 0){
+        $(".userdynamic").empty();
+        for(let x=0; x< defSearch.length; x++){
+        let user = "<tr><td>"+defSearch[x].Username + "</td><td>"+defSearch[x].Email + "</td><td>"+defSearch[x].Type +"</td></tr>";
+        $(".userdynamic").append(user);
+        }
+     } 
+});
+});
+</script>
     </body>
 </html>

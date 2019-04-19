@@ -32,6 +32,12 @@
   </div>
 </nav>  
 <h1 class="text-center"> Admin Panel</h1>
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroup-sizing-default">Restaurant Name Here</span>
+  </div>
+<input id="search" class="form-control mr-sm-2" type="search" name="Search" aria-label="Search">
+</div>
 <table class="table">
   <thead>
     <tr>
@@ -43,7 +49,7 @@
     </tr>
   </thead>
  
-  <tbody>
+  <tbody class="dynamic">
      <% Restaurants.forEach(function(restaurant){%>
     <tr>
       <td><a style="text-decoration:none; color:black;" href="/restaurants/<%= restaurant._id%>"><%= restaurant.Name %> </a></td>
@@ -67,5 +73,63 @@
  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" ></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function(){
+    let search = [];
+    let defSearch = [];
+    let tester;
+<% Restaurants.forEach(function(restaurant){ %>
+      tester = {
+     Originator:{ 
+     id: "<%= restaurant.Originator.id%>",
+     username: "<%= restaurant.Originator.username%>",
+     Email: "<%= restaurant.Originator.Email%>"
+     },
+     _id: "<%= restaurant._id %>",
+     Name: "<%= restaurant.Name %>",
+     Type:"<%= restaurant.Type %>",
+     Address:"<%= restaurant.Address %>"
+     }
+     search.push(tester);
+     defSearch.push(tester);
+    <% }); %>
+let options = {
+  shouldSort: true,
+  findAllMatches: true,
+  threshold: 0.6,
+  location: 0,
+  distance: 100,
+  maxPatternLength: 32,
+  minMatchCharLength: 0,
+  keys: [
+    "Name"
+]
+};
+let fuse = new Fuse(search, options);
+$("#search").keyup(function(){
+    $(".dynamic").empty();
+    let query = $("#search").val();
+    let textvalue = $("#search").text();
+    let result = fuse.search(query);
+ console.log("Query: " + result);
+if(result){
+        $(".dynamic").empty();
+        for(let x=0; x< result.length; x++){
+        let restaurant = "<tr> <td><a style='text-decoration:none;color:black;'  href='/restaurants/"+result[x]._id+"'>"+result[x].Name+"</a> </td> <td>"+result[x].Address+"</td> <td>"+result[x].Type + "</td> <td>"+result[x].Originator.username + "</td> <td><a class='btn btn-warning' id='"+result[x].Name+"' href='/admin/restaurants/"+result[x]._id+"/edit'>Update</a> <form style='display:inline;' action='/admin/restaurants/"+result[x]._id+"?_method=DELETE' method='POST'> <button class='btn btn-danger'>Remove</button></form></td></tr>";
+        $(".dynamic").append(restaurant);
+        }
+    
+}
+if(result.length == 0){
+        $(".dynamic").empty();
+        for(let x=0; x< defSearch.length; x++){
+        let restaurant = "<tr> <td><a style='text-decoration:none;color:black;'  href='/restaurants/"+defSearch[x]._id+"'>"+defSearch[x].Name+"</a> </td> <td>"+defSearch[x].Address+"</td> <td>"+defSearch[x].Type + "</td> <td>"+defSearch[x].Originator.username + "</td> <td><a class='btn btn-warning' id='"+defSearch[x].Name+"' href='/admin/restaurants/"+defSearch[x]._id+"/edit'>Update</a> <form style='display:inline;' action='/admin/restaurants/"+defSearch[x]._id+"?_method=DELETE' method='POST'> <button class='btn btn-danger'>Remove</button></form></td></tr>";
+        $(".dynamic").append(restaurant);
+        }
+     } 
+});
+});
+
+</script>
     </body>
 </html>

@@ -6,10 +6,12 @@
                 <h1>CriticHub</h1>
                 <p>Best place to review restaurants<p>
                     <p>
-                  <form class="form-inline my-2 my-lg-0" action="/restaurants" method="GET">
-                  <input id="search" class="form-control mr-sm-2" type="search" placeholder="Restaurant Name" name="Search" aria-label="Search">
-                  <!--<button  class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>-->
-                  </form>
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroup-sizing-default">Restaurant Name/ Address</span>
+  </div>
+<input id="search" class="form-control mr-sm-2" type="search" name="Search" aria-label="Search">
+</div
                     </p>
                  <% if(!currentUser){ %>
                 <% }else{ %>

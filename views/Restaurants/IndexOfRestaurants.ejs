@@ -4,26 +4,26 @@
     <header class="jumbotron"> 
         <div class="container">
                 <h1>CriticHub</h1>
-                <p>Best place to review restaurants<p>
+                <p>Best place to review restaurants</p>
                     <p>
-<div class="input-group mb-3">
-  <div class="input-group-prepend">
-    <span class="input-group-text" id="inputGroup-sizing-default">Restaurant Name/ Address</span>
-  </div>
-<input id="search" class="form-control mr-sm-2" type="search" name="Search" aria-label="Search">
-</div>
+                    <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Search Restaurant Name</span>
+                    </div>
+                    <input id="search" class="form-control mr-sm-2" type="search" name="Search" aria-label="Search">
+                    </div>
                     </p>
                  <% if(!currentUser){ %>
+                 <p>View our restaurants & reviews<p>
                 <% }else{ %>
                  <% if(currentUser.Type == 'Critic'){ %>
                  <p>View our restaurants<p>
                   <% }else{ %>
                   <p><a class="btn btn-primary btn-lg" href="/restaurants/new">Add Restaurant</a></p>
                   <% Restaurants.forEach(function(restaurant){%>
-            <% if(restaurant.Originator.id.equals(currentUser._id)){%>
-             <div class="invisible" style="display:none;"><p><a class="btn btn-primary btn-lg" href="/restaurants/new">Add Restaurant</a></p></div>
-            <% } else{ %>
-                 
+                  <% if(restaurant.Originator.id.equals(currentUser._id)){%>
+                  <div class="invisible" style="display:none;"><p><a class="btn btn-primary btn-lg" href="/restaurants/new">Add Restaurant</a></p></div>
+                  <% } else{ %>
                   <% } %>
                   <% }); %>
      <% } %>
@@ -77,8 +77,7 @@ let options = {
   maxPatternLength: 32,
   minMatchCharLength: 0,
   keys: [
-    "Name",
-    "Address"
+    "Name"
 ]
 };
 let fuse = new Fuse(search, options); // "list" is the item array
@@ -104,6 +103,9 @@ if(result.length == 0){
         }
      } 
 });
+
+
+
 });
 
 </script>

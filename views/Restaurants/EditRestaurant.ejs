@@ -7,8 +7,16 @@
 <div class="form-group">
    Name: <input class="form-control" value="<%= restaurant.Name %>" type="text" name="Name" required>
 </div>
-    <div class="form-group">
-   Image: <input class="form-control" type="file" id="Link"  name="Link" accept="image/*" >
+<div class="form-group">
+    <div class="input-group mb-3">
+    <div class="input-group-prepend">
+    <span class="input-group-text">Upload Image</span>
+    </div>
+    <div class="custom-file">
+    <input class="form-control" type="file" id="Link"  name="Link" accept="image/*" >    
+    <label class="custom-file-label" for="Link">Choose Image</label>
+    </div>
+    </div>
 </div>
 <div class="form-group">
    Address: <input value="<%= restaurant.Address %>" class="form-control" type="text" name="newAddress">

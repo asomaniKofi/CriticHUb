@@ -32,12 +32,12 @@
   </div>
 </nav>  
 <h1 class="text-center"> Admin Panel</h1>
-<div class="input-group mb-3">
-  <div class="input-group-prepend">
-    <span class="input-group-text" id="inputGroup-sizing-default">Restaurant Name/ Address</span>
-  </div>
-<input id="search" class="form-control mr-sm-2" type="search" name="Search" aria-label="Search">
-</div>
+    <div class="input-group mb-3">
+    <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroup-sizing-default">Restaurant Name</span>
+    </div>
+    <input id="search" class="form-control mr-sm-2" type="search" name="Search" aria-label="Search">
+    </div>
 <table class="table">
   <thead>
     <tr>
@@ -102,8 +102,7 @@ let options = {
   maxPatternLength: 32,
   minMatchCharLength: 0,
   keys: [
-    "Name",
-    "Address"
+    "Name"
 ]
 };
 let fuse = new Fuse(search, options);

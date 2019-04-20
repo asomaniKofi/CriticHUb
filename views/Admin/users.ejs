@@ -103,15 +103,19 @@ $("#search").keyup(function(){
 if(result){
         $(".userdynamic").empty();
         for(let x=0; x< result.length; x++){
+        if(result[x].Type !="HubAdmin"){
         let user = "<tr><td>"+result[x].Username + "</td> <td>"+result[x].Email + "</td> <td>"+result[x].Type + "</td> </tr>";
         $(".userdynamic").append(user);
+        }
         }
 }
 if(result.length == 0){
         $(".userdynamic").empty();
         for(let x=0; x< defSearch.length; x++){
+        if(defSearch[x].Type !="HubAdmin"){
         let user = "<tr><td>"+defSearch[x].Username + "</td><td>"+defSearch[x].Email + "</td><td>"+defSearch[x].Type +"</td></tr>";
         $(".userdynamic").append(user);
+        }
         }
      } 
 });

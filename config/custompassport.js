@@ -81,12 +81,11 @@ module.exports = function(passport){
     callbackURL: Auth.GoogleAuth.OAUTH2_CALLBACK
   },
   function(token, tokenSecret, profile, done) {
- User.find({"googleID":profile.id},function(err,user){
-        if(err){
+ User.findOne({"googleID":profile.id},function(err,user){
+        if(err)
         return done(err);
-        }
         if(user){
-        return done(null,user);
+            return done(null,user);
         }else{
          let googleUser = new User();
          googleUser.googleID = profile.id;

@@ -1,6 +1,7 @@
 let express = require("express");
 let router = express.Router({mergeParams:true});
 let nodemailer = require("nodemailer");
+require('locus');
 let transporter = nodemailer.createTransport({
     service:"gmail",
     auth:{
@@ -94,7 +95,7 @@ router.put("/user/:id",SecurityCheck,upload.single("Link"),function(req,res){
     let newName = req.body.Name;
     let link;
     let token;
-    if(UserType == "Owner"){
+if(UserType == "Owner"){
          if(req.file){
          User.findById(req.user._id,function(err,user){
              if(err){
@@ -130,6 +131,60 @@ router.put("/user/:id",SecurityCheck,upload.single("Link"),function(req,res){
                     Avatar: link,
                     AvatarToken: token
                     };
+        Restaurant.find({"Originator.username":req.user.username},function(err,restaurant){
+            if(err){
+                console.log(err);
+           req.flash("Error","Something went wrong Line 150");
+           console.log(err);
+           res.redirect("back");
+            }else{
+                
+                if(restaurant.Originator){
+            //if(restaurant.Originator.username != newName){
+                restaurant.Originator.username = newName;
+                //if(restaurant.Originator.Email != newEmail){
+                    restaurant.Originator.Email = newEmail;
+                //}
+                restaurant.save(function(err){
+                    if(err){
+                        console.log(err);
+          req.flash("Error","Something went wrong Line 156");
+           return res.redirect("back");
+                    }
+                });
+            //}
+            }
+            if(restaurant.Originator){
+            if(restaurant.Originator.Email != newEmail){
+                restaurant.Originator.Email = newEmail;
+                if(restaurant.Originator.username != newName){
+                    restaurant.Originator.username = newName;
+                }
+                restaurant.save(function(err){
+                    if(err){
+                        console.log("Issue 168");
+                        console.log(err);
+                    }
+                });
+            }
+            }
+            User.findByIdAndUpdate(req.user._id, updatedUser,{new:true},function(err,update){
+            if(err){
+            req.flash("Error","Line 186");
+            console.log(err);
+           return res.redirect("back");
+            }else{
+             req.login(update,function(err){
+                    if(err){
+                        console.log("Line 133: " + err);
+                       res.redirect("/restaurants");  
+                    }
+                });
+                 res.redirect("/restaurants");
+            }
+        });
+            }
+        });
     User.findByIdAndUpdate(req.user._id, updatedUser,{new:true},function(err,update){
             if(err){
             req.flash("Error","Line 126");
@@ -214,9 +269,8 @@ router.put("/user/:id",SecurityCheck,upload.single("Link"),function(req,res){
             }
         });
      } //Owner Logic
-     
-     if(UserType == "Critic"){
-         if(req.file){
+if(UserType == "Critic"){
+if(req.file){
         User.findById(req.user._id,function(err,user){
                 if(err){
                 req.flash("Error","Line 201");
@@ -246,25 +300,42 @@ router.put("/user/:id",SecurityCheck,upload.single("Link"),function(req,res){
                             if(!newName || newName == null){
                             return res.redirect("back");
                             }
-                            Review.find({"User.id":user._id},function(err,review){
-                            if(err){
-                                    console.log("Line 225 issue");
-                                    console.log(err);
+        Review.find({"User.id":req.params.id},function(err,review){
+                    if(err){
+                            console.log("Line 267 issue");
+                            console.log(err);
                             }else{
-                                if(review.User){
-                                    if(review.User.username != newName){
-                                        review.User.username = newName;
-                                        review.save(function(err){
-                                            if(err){
-                                                console.log("Line 232");
-                                                console.log(err);
-                                                throw err;
-                                            }
-                                        });
-                                    }
-                            }
-                                }
-                            });
+for(let q =0; q<review.length; q++){
+        if(review[q].User){
+        review[q].User.username = newName
+        Restaurant.findById(review[q].Restaurant.id,function(err,restaurant){
+        //eval(require("locus")); 
+        if(err){
+                console.log(err);
+                req.flash("Error",err);
+                res.redirect("back");
+                }else{
+                if(restaurant.Reviews){
+                if(restaurant.Reviews.length > 0){
+                for(let x=0; x < restaurant.Reviews.length; x++){
+                }
+                console.log(restaurant.Reviews);
+                }
+                }
+                }
+                });
+                review[q].User.username = newName;
+                review[q].save(function(err){
+                if(err){
+                console.log("Line 274");
+                throw err;
+                }
+                });
+                
+                }
+}
+                }
+        });
                     }
                     let updatedUser = {
                             username : newName,
@@ -289,34 +360,53 @@ router.put("/user/:id",SecurityCheck,upload.single("Link"),function(req,res){
         });
         });
         });
-         }
-         if (!newEmail || newEmail == null){
+         }else{
+        if (!newEmail || newEmail == null){
             return res.redirect("back");
         }
         if(!newName || newName == null){
              return res.redirect("back");
         }
-        Review.find({"User.id":req.user._id},function(err,review){
-                                if(err){
-                                    console.log("Line 267 issue");
-                                    console.log(err);
-                                }else{
-                                    if(review.User){
-                                    if(review.User.username != newName){
-                                        review.User.username = newName;
-                                        review.save(function(err){
-                                            if(err){
-                                                console.log("Line 274");
-                                                throw err;
-                                            }
-                                        });
-                                    }
-                                }
-                                }});
+        Review.find({"User.id":req.params.id},function(err,review){
+                    if(err){
+                            console.log("Line 267 issue");
+                            console.log(err);
+                            }else{
+for(let y =0; y<review.length; y++){
+        if(review[y].User){
+        review[y].User.username = newName
+        Restaurant.findById(review[y].Restaurant.id,function(err,restaurant){
+        //eval(require("locus")); 
+        if(err){
+                console.log(err);
+                req.flash("Error",err);
+                res.redirect("back");
+                }else{
+                if(restaurant.Reviews){
+                if(restaurant.Reviews.length > 0){
+                for(let x=0; x < restaurant.Reviews.length; x++){
+                }
+                console.log(restaurant.Reviews);
+                }
+                }
+                }
+                });
+                review[y].User.username = newName;
+                review[y].save(function(err){
+                if(err){
+                console.log("Line 274");
+                throw err;
+                }
+                });
+                
+                }
+}
+                }
+        });
         let updatedUser = {
             username : newName,
             Email: newEmail
-        };
+                          };
         User.findByIdAndUpdate(req.user._id, updatedUser,{new:true},function(err,update){
             if(err){
             req.flash("Error","Line 286");
@@ -332,6 +422,8 @@ router.put("/user/:id",SecurityCheck,upload.single("Link"),function(req,res){
             res.redirect("/restaurants");
             }
 });
+         }
+
      }
 });
 router.delete("/user/:id",SecurityCheck,function(req,res){

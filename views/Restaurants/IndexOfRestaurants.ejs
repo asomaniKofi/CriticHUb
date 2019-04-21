@@ -1,38 +1,36 @@
 <%include ../partials/headfile %>
     <br>
 <div="container">
-    <header class="jumbotron"> 
+<header class="jumbotron"> 
         <div class="container">
-                <h1>CriticHub</h1>
-                <p>Best place to review restaurants</p>
+                    <h1>CriticHub</h1>
+                    <p>Best place to review restaurants</p>
                     <p>
                     <div class="input-group mb-3">
                     <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-default">Search Restaurant Name</span>
+                    <span class="input-group-text" id="inputGroup-sizing-default">Location</span>
                     </div>
                     <input id="search" class="form-control mr-sm-2" type="search" name="Search" aria-label="Search">
                     </div>
                     </p>
-                 <% if(!currentUser){ %>
-                 <p>View our restaurants & reviews<p>
-                <% }else{ %>
-                 <% if(currentUser.Type == 'Critic'){ %>
-                 <p>View our restaurants<p>
-                  <% }else{ %>
-                  <p><a class="btn btn-primary btn-lg" href="/restaurants/new">Add Restaurant</a></p>
-                  <% Restaurants.forEach(function(restaurant){%>
-                  <% if(restaurant.Originator.id.equals(currentUser._id)){%>
-                  <div class="invisible" style="display:none;"><p><a class="btn btn-primary btn-lg" href="/restaurants/new">Add Restaurant</a></p></div>
-                  <% } else{ %>
-                  <% } %>
-                  <% }); %>
-     <% } %>
-     <% } %>
-
+                    <% if(!currentUser){ %>
+                    <p>View our restaurants & reviews<p>
+                    <% }else{ %>
+                    <% if(currentUser.Type == 'Critic'){ %>
+                    <p>View our restaurants<p>
+                    <% }else{ %>
+                    <p><a class="btn btn-primary btn-lg" href="/restaurants/new">Add Restaurant</a></p>
+                    <% Restaurants.forEach(function(restaurant){%>
+                    <% if(restaurant.Originator.id.equals(currentUser._id)){%>
+                    <div class="invisible" style="display:none;"><p><a class="btn btn-primary btn-lg" href="/restaurants/new">Add Restaurant</a></p></div>
+                    <% } else{ %>
+                    <% } %>
+                    <% }); %>
+                    <% } %>
+                    <% } %>
         </div>
-    </header>
-
-         <div class="row text-center" style="display:flex; flex-wrap:wrap;">
+</header>
+<div class="row text-center" style="display:flex; flex-wrap:wrap;">
         <% Restaurants.forEach(function(restaurant){%>
         <div class="col-md-3 col-sm-6">
             <div class="img-thumbnail">
@@ -46,7 +44,7 @@
             </div>
         </div>
         <% }); %>
-        </div>
+</div>
 </div>
 <script>
 $(document).ready(function(){
@@ -71,13 +69,14 @@ $(document).ready(function(){
 let options = {
   shouldSort: true,
   findAllMatches: true,
+  matchAllTokens: true,
   threshold: 0.6,
   location: 0,
   distance: 100,
   maxPatternLength: 32,
   minMatchCharLength: 0,
   keys: [
-    "Name"
+    "Address"
 ]
 };
 let fuse = new Fuse(search, options); // "list" is the item array
@@ -93,7 +92,6 @@ if(result){
         let restaurant = "<div class='col-md-3 col-sm-6'> <div class='img-thumbnail'> <img class='img-fluid' src='"+result[x].Image+"' alt='Restaurant Cloudinary'> <div class='caption'> <h3 id='tester'>"+result[x].Name+"</h3> <p><a class='btn btn-primary' id='"+result[x].Name+"' href='/restaurants/"+result[x]._id+"'>View </a></p></div></div>";
         $(".row,text-center").append(restaurant);
         }
-    
 }
 if(result.length == 0){
         $(".row,text-center").empty();

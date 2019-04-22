@@ -141,7 +141,7 @@ let Originator = {
         from : "donotreplycritic@gmail.com",
         to:req.user.Email,
         subject:"Your Restaurant has been added",
-        text: NameData + " is now apart of the Hub and can be reviewed by Critics across the world"
+        text: NameData + " is now a part of the Hub and can be reviewed by Critics across the world"
     };
     cloudinary.v2.uploader.upload(req.file.path,function(err,result){
         if(err){

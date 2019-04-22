@@ -111,19 +111,20 @@ router.get("/restaurants/new",userStatus,function(req,res){
 
 //Create new restaurant
 router.post("/restaurants",userStatus,upload.single("Link"),function(req,res){
-req.check("Name","Please Enter Restaurant Name").isEmpty();
+req.check("Name","Please Enter Restaurant Name").not().isEmpty();
 req.check("Link","Please upload picture").isEmpty();
 req.check("Users","Please select your Restaurant Type").not().isEmpty();
-req.check("Telephone","Please enter correct telephone number").isEmpty();
-req.check("Description","Please Describe your restaurant").isEmpty();
+req.check("Telephone","Please enter correct telephone number").not().isEmpty();
+req.check("Description","Please Describe your restaurant").not().isEmpty();
     let Errors = req.validationErrors();
     if(Errors){
         req.session.errors = Errors;
         req.session.success = false;
         req.flash("Error",req.session.errors);
-        res.redirect("back");
-    }
-let NameData =  req.body.Name;
+       return res.redirect("back");
+    }else{
+    req.session.success = true;
+      let NameData =  req.body.Name;
 let ImageLink =  req.body.Link;
 let ImageID;
 let Address = req.body.LineOne + "," + req.body.LineTwo + "," + req.body.LineThree;
@@ -186,7 +187,9 @@ transporter.sendMail(mailOptions,function(error,info){
     res.redirect("/restaurants/"+result.id);
     }});
 });
- });
+ });  
+    }
+
 });
 
 //Opens Selected restaurant

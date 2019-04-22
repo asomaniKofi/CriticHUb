@@ -169,6 +169,7 @@ router.post('/reset/:token',function(req, res) {
                 req.flash("Error",req.session.errors);
                 res.redirect("back");
                 }else{
+                req.session.success = true;
                 if(req.body.firstpassword === req.body.confirmpassword){
                 user.setPassword(req.body.confirmpassword, function(err){
                 user.resetToken = undefined;
@@ -232,9 +233,10 @@ router.post("/facebookcomplete",upload.single("Link"),function(req, res) {
         req.session.errors = Errors;
         req.session.success = false;
         req.flash("Error",req.session.errors);
-        res.redirect("back");
-    }
-    let Type =  req.body.UserType;
+       return res.redirect("back");
+    }else{
+        req.session.success = true;
+            let Type =  req.body.UserType;
     let Email = req.body.Email;
      User.findById(req.body.UserID,function(err, user) {
          if(err || !user){
@@ -263,6 +265,8 @@ router.post("/facebookcomplete",upload.single("Link"),function(req, res) {
     });
          }
      });
+    }
+
 });
 //========================================TWITTER LINKS================================================================================================================
 router.get("/auth/twitter",passport.authenticate(("twitter")));
@@ -281,7 +285,7 @@ router.post("/confirmprofile",function(req,res){
         req.session.errors = Errors;
         req.session.success = false;
         req.flash("Error",req.session.errors);
-        res.redirect("back");
+       return res.redirect("back");
     }else{
             let Type = req.body.UserType;
     User.findById(req.body.UserID,function(err, user) {
@@ -320,7 +324,7 @@ router.post("/register",upload.single("Link"),function(req, res) {
         req.session.errors = Errors;
         req.session.success = false;
         req.flash("Error",req.session.errors);
-        res.redirect("back");
+        return res.redirect("back");
     }else{
     req.session.success = true;
     let HubUser = new User({username:req.body.username,Type:req.body.UserType,Email:req.body.Email,Avatar:"",AvatarToken:""});

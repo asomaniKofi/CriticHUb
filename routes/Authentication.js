@@ -226,7 +226,7 @@ router.get("/facebookcomplete",function(req,res){
 router.post("/facebookcomplete",upload.single("Link"),function(req, res) {
      req.check("Email","Invalid Email Address").isEmail();
      req.check("Link","Please upload picture").isEmpty();
-     req.check("Users","Please select your User Type").isEmpty();
+     req.check("Users","Please select your User Type").not().isEmpty();
      let Errors = req.validationErrors();
      if(Errors){
         req.session.errors = Errors;
@@ -275,7 +275,7 @@ router.get("/completeprofile",function(req,res){
    }
 });
 router.post("/confirmprofile",function(req,res){
-    req.check("Users","Please select your User Type").isEmpty();
+    req.check("Users","Please select your User Type").not().isEmpty();
     let Errors = req.validationErrors();
     if(Errors){
         req.session.errors = Errors;
@@ -314,7 +314,7 @@ router.post("/register",upload.single("Link"),function(req, res) {
     req.check("Email","Invalid Email Address").isEmail();
     req.check("password","Password must be greater than 4 characters").isLength({min:4});
     req.check("Link","Please upload picture").isEmpty();
-    req.check("Users","Please select your User Type").isEmpty();
+    req.check("Users","Please select your User Type").not().isEmpty();
     let Errors = req.validationErrors();
     if(Errors){
         req.session.errors = Errors;

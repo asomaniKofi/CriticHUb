@@ -113,7 +113,7 @@ router.get("/restaurants/new",userStatus,function(req,res){
 router.post("/restaurants",userStatus,upload.single("Link"),function(req,res){
 req.check("Name","Please Enter Restaurant Name").isEmpty();
 req.check("Link","Please upload picture").isEmpty();
-req.check("Users","Please select your User Type").isEmpty();
+req.check("Users","Please select your Restaurant Type").not().isEmpty();
 req.check("Telephone","Please enter correct telephone number").isEmpty();
 req.check("Description","Please Describe your restaurant").isEmpty();
     let Errors = req.validationErrors();

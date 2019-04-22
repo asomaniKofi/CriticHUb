@@ -111,11 +111,11 @@ router.get("/restaurants/new",userStatus,function(req,res){
 
 //Create new restaurant
 router.post("/restaurants",userStatus,upload.single("Link"),function(req,res){
-req.check("Name","Please Enter Restaurant Name").isEmpty();
+req.check("Name","Please Enter Restaurant Name").not().isEmpty();
 req.check("Link","Please upload picture").isEmpty();
 req.check("Users","Please select your Restaurant Type").not().isEmpty();
-req.check("Telephone","Please enter correct telephone number").isEmpty();
-req.check("Description","Please Describe your restaurant").isEmpty();
+req.check("Telephone","Please enter correct telephone number").not().isEmpty();
+req.check("Description","Please Describe your restaurant").not().isEmpty();
     let Errors = req.validationErrors();
     if(Errors){
         req.session.errors = Errors;

@@ -23,7 +23,7 @@ router.post("/restaurants/:id/reviews",function(req,res){
      let name = req.body.Review;
   Restaurant.findById(req.params.id,function(err,result){
      if(err || !result){
-         req.flash("Error","Line 26");
+         req.flash("Error",err);
          console.log(err);
          res.redirect("/restaurants");
      } else{

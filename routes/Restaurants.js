@@ -48,7 +48,7 @@ router.use(function(req, res, next){
 // Define escapeRegex function for search feature
 function escapeRegex(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-};
+}
 
 //Loads all restaurants
 router.get("/restaurants",Mental,function(req,res){
@@ -111,6 +111,18 @@ router.get("/restaurants/new",userStatus,function(req,res){
 
 //Create new restaurant
 router.post("/restaurants",userStatus,upload.single("Link"),function(req,res){
+req.check("Name","Please Enter Restaurant Name").isEmpty();
+req.check("Link","Please upload picture").isEmpty();
+req.check("Users","Please select your User Type").isEmpty();
+req.check("Telephone","Please enter correct telephone number").isEmpty();
+req.check("Description","Please Describe your restaurant").isEmpty();
+    let Errors = req.validationErrors();
+    if(Errors){
+        req.session.errors = Errors;
+        req.session.success = false;
+        req.flash("Error",req.session.errors);
+        res.redirect("back");
+    }
 let NameData =  req.body.Name;
 let ImageLink =  req.body.Link;
 let ImageID;

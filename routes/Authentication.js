@@ -158,25 +158,32 @@ router.post('/reset/:token',function(req, res) {
         function(done){
             User.findOne({ resetToken: req.params.token, resetExpires: { $gt: Date.now() } },function(err,user){
                 if(!user){
-                    req.flash('Error', 'Password reset token is invalid or has expired.');
-          return res.redirect('back');
+                req.flash('Error', 'Password reset token is invalid or has expired.');
+                return res.redirect('back');
                 }
+                req.check("firstpassword","Password must be greater than 4 characters").isLength({min:4}).equals(req.body.confirmpassword);
+                let Errors = req.validationErrors();
+                if(Errors){
+                req.session.errors = Errors;
+                req.session.success = false;
+                req.flash("Error",req.session.errors);
+                res.redirect("back");
+                }else{
                 if(req.body.firstpassword === req.body.confirmpassword){
-                    user.setPassword(req.body.confirmpassword, function(err){
-                        user.resetToken = undefined;
-                        user.resetExpires = undefined;
-                        
-                        user.save(function(err){
-                            req.logIn(user,function(err){
-                                done(err,user);
-                            });
-                        });
-                    });
+                user.setPassword(req.body.confirmpassword, function(err){
+                user.resetToken = undefined;
+                user.resetExpires = undefined;
+                user.save(function(err){
+                req.logIn(user,function(err){
+                done(err,user);
+                });
+                });
+                });
                 }else{
                     req.flash("Error","Passwords do not match");
                     return res.redirect("back");
+                }  
                 }
-                
             });
         },
         function(user,done){
@@ -208,7 +215,7 @@ router.post('/reset/:token',function(req, res) {
 
 //========================================FACEBOOK LINKS================================================================================================================
 router.get("/auth/facebook",passport.authenticate("facebook",{scope:["email"]}));
-router.get("/auth/facebook/callback",passport.authenticate("facebook",{successRedirect:"/facebookcomplete",failureRedirect:"/restaurants"}));
+router.get("/auth/facebook/callback",passport.authenticate("facebook",{successRedirect:"/facebookcomplete",failureRedirect:"/restaurants", failureFlash: true}));
 router.get("/facebookcomplete",function(req,res){
    if(typeof(req.user.Type) == "undefined"){
         res.render("User/facebookcomplete");
@@ -217,6 +224,16 @@ router.get("/facebookcomplete",function(req,res){
    }
 });
 router.post("/facebookcomplete",upload.single("Link"),function(req, res) {
+     req.check("Email","Invalid Email Address").isEmail();
+     req.check("Link","Please upload picture").isEmpty();
+     req.check("Users","Please select your User Type").isEmpty();
+     let Errors = req.validationErrors();
+     if(Errors){
+        req.session.errors = Errors;
+        req.session.success = false;
+        req.flash("Error",req.session.errors);
+        res.redirect("back");
+    }
     let Type =  req.body.UserType;
     let Email = req.body.Email;
      User.findById(req.body.UserID,function(err, user) {
@@ -249,7 +266,7 @@ router.post("/facebookcomplete",upload.single("Link"),function(req, res) {
 });
 //========================================TWITTER LINKS================================================================================================================
 router.get("/auth/twitter",passport.authenticate(("twitter")));
-router.get("/auth/twitter/callback",passport.authenticate("twitter",{successRedirect:"/completeprofile",failureRedirect:"/restaurants"}));
+router.get("/auth/twitter/callback",passport.authenticate("twitter",{successRedirect:"/completeprofile",failureRedirect:"/restaurants", failureFlash: true}));
 router.get("/completeprofile",function(req,res){
    if(typeof(req.user.Type) == "undefined"){
        res.render("User/completeprofile");
@@ -258,7 +275,15 @@ router.get("/completeprofile",function(req,res){
    }
 });
 router.post("/confirmprofile",function(req,res){
-    let Type = req.body.UserType;
+    req.check("Users","Please select your User Type").isEmpty();
+    let Errors = req.validationErrors();
+    if(Errors){
+        req.session.errors = Errors;
+        req.session.success = false;
+        req.flash("Error",req.session.errors);
+        res.redirect("back");
+    }else{
+            let Type = req.body.UserType;
     User.findById(req.body.UserID,function(err, user) {
         if(err ||  !user){
             req.flash("Error","Line 251");
@@ -277,17 +302,31 @@ router.post("/confirmprofile",function(req,res){
             });
         }
     });
+    }
 });
 //==============================================================================GOOGLE LINKS===========================================================================
 router.get("/auth/google",passport.authenticate("google",{scope:scopes}));
-router.get("/auth/google/callback",passport.authenticate("google",{successRedirect:"/completeprofile",failureRedirect:"/restaurants"}));
+router.get("/auth/google/callback",passport.authenticate("google",{successRedirect:"/completeprofile",failureRedirect:"/restaurants", failureFlash: true}));
 
 
 router.post("/register",upload.single("Link"),function(req, res) {
+    req.check("username","Invalid Username").not().isEmpty();
+    req.check("Email","Invalid Email Address").isEmail();
+    req.check("password","Password must be greater than 4 characters").isLength({min:4});
+    req.check("Link","Please upload picture").isEmpty();
+    req.check("Users","Please select your User Type").isEmpty();
+    let Errors = req.validationErrors();
+    if(Errors){
+        req.session.errors = Errors;
+        req.session.success = false;
+        req.flash("Error",req.session.errors);
+        res.redirect("back");
+    }else{
+    req.session.success = true;
     let HubUser = new User({username:req.body.username,Type:req.body.UserType,Email:req.body.Email,Avatar:"",AvatarToken:""});
     let Owner = "Welcome to CriticHub as an Owner you can: \n 1. Add your restaurant \n 2. Cannot leave reviews on any restaurant \n 3. Edit Restaurant \n 4. Delete Restaurant \n 5. View Profile \n 6. Edit Email, Name & Image \n 7. Remove Account";
     let Critic = "Welcome to Critichub \n As a Critic you can: \n  1. Leave multiple reviews on restaurants \n 2. Cannot add a restaurant \n 4. Edit Review \n 5. Delete Review \n 6. View Profile \n 7. Edit Email, Name & Image \n 8. Remove Account";
-        let mailOptions = {
+    let mailOptions = {
         from : "donotreplycritic@gmail.com",
         to:HubUser.Email,
         subject:"Welcome to CriticHub " + HubUser.username,
@@ -325,6 +364,8 @@ router.post("/register",upload.single("Link"),function(req, res) {
         });
     });
     });
+    }
+
 });
 router.get("/login",function(req,res){
     res.render("User/login");

@@ -18,11 +18,13 @@ let Admin = require("./routes/Admin");
 let UserRoutes = require("./routes/User");
 let MethodOverride = require("method-override");
 let flash = require("connect-flash");
+let expressValidator = require("express-validator");
 require('./config/custompassport.js')(passport);
 
 //Seed();
 app.use(flash());
 app.use(bodyParser.urlencoded({extended:false}));
+app.use(expressValidator());
 app.set("view engine","ejs");
 app.use(express.static(__dirname+ "/public/"));
 app.use(express.static(__dirname + '/views/partials'));

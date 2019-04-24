@@ -72,7 +72,7 @@ router.get("/restaurants/:id/reviews/:reviews_id/edit",checkOwnership,function(r
 });
 
 //Edit reviews
-router.put("/restaurants/:id/reviews/:reviews_id",userStatus,function(req,res){
+router.put("/restaurants/:id/reviews/:reviews_id",checkOwnership,function(req,res){
     let testreview = {
         Text: req.body.Review,
         Rating: req.body.custId
@@ -89,7 +89,7 @@ router.put("/restaurants/:id/reviews/:reviews_id",userStatus,function(req,res){
 });
 
 //Delete Review
-router.delete("/restaurants/:id/reviews/:reviews_id",userStatus,function(req,res){
+router.delete("/restaurants/:id/reviews/:reviews_id",checkOwnership,function(req,res){
     Review.findByIdAndRemove(req.params.reviews_id,function(err){
         if(err){
             req.flash("Error","Line 93");

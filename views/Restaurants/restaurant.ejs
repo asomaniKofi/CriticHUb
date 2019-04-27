@@ -25,10 +25,10 @@
                       <% restaurant.Reviews.forEach(function(review){%>
                       <% test += review.Rating %>
                       <% }); %> 
-                    <%if(!isNaN(test)){ %>
-                     Average Rating: <%= Math.round((test/restaurant.Reviews.length) *10)/10 %>/5 <div id="rateYo" class="float-right"><%= test/restaurant.Reviews.length %></div>
+                    <%if(isNaN(test)){ %>
+                     Average Rating: 0/5 <div id="rateYo" class="float-right">0</div>
                      <% }else{ %>
-                    Average Rating: 0/5 <div id="rateYo" class="float-right">0</div>
+                     Average Rating: <%= Math.round((test/restaurant.Reviews.length) *10)/10 %>/5 <div id="rateYo" class="float-right"><%= test/restaurant.Reviews.length %></div>
                      <% } %>
                 </div>
             </div>

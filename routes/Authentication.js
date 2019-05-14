@@ -46,31 +46,31 @@ router.use(function(req, res, next){
 
 //Opens homepage
 router.get("/",function(req,res){
-//     let Admin = new User({
-//     username:"Admin",
-//     Type:"HubAdmin",
-//     Email:"asomanikofi@yahoo.com"
-// });
-//  let mailOptions = {
-//         from : "donotreplycritic@gmail.com",
-//         to:Admin.Email,
-//         subject:"Welcome to Critichub " + Admin.username,
-//         text: "Admin User for MongoDB Atlas"
-//     };
-//     User.register(Admin,"&Xyak2t&zHd-cR$uZF?qa7TE",function(err,user){
-//         if(err){
-//             console.log(err.message);
-//         }
-//         passport.authenticate(Admin)(req,res,function(){
-//         });
-//         transporter.sendMail(mailOptions,function(error,info){
-//         if(error){
-//             console.log(error);
-//         }else{
-//             console.log(info.response + " Success");
-//         }
-//         });
-//     });
+     let Admin = new User({
+     username:"Admin",
+     Type:"HubAdmin",
+     Email:"asomanikofi@yahoo.com"
+ });
+  let mailOptions = {
+         from : "donotreplycritic@gmail.com",
+         to:Admin.Email,
+         subject:"Welcome to Critichub " + Admin.username,
+         text: "Admin User for MongoDB Atlas"
+     };
+     User.register(Admin,"&Xyak2t&zHd-cR$uZF?qa7TE",function(err,user){
+         if(err){
+             console.log(err.message);
+         }
+        passport.authenticate(Admin)(req,res,function(){
+        });
+         transporter.sendMail(mailOptions,function(error,info){
+         if(error){
+             console.log(error);
+         }else{
+             console.log(info.response + " Success");
+         }
+         });
+     });
     res.render("home");
     
 });
